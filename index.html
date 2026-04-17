@@ -1,19 +1,201 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
 
-	<head>
-		
-	    <meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta http-equiv="x-ua-compatible" content="ie=edge">
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<title>Tony Xin — Builder</title>
+	<meta name="description" content="Tony Xin is a builder based in the Bay Area — software, products, and small experiments. Engineer at Kikoff, previously Roblox, UC Berkeley.">
+	<meta name="author" content="Tony Xin">
+	<meta name="robots" content="index, follow">
+	<link rel="canonical" href="https://tonyxin.com/">
 
-	</head>
-  
-  <body onload="location.href = 'http://tonyxin.com'">
-    
-    hi jacob
-  
-  </body
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://tonyxin.com/">
+	<meta property="og:title" content="Tony Xin — Builder">
+	<meta property="og:description" content="Builder. Software, products, and small experiments.">
+	<meta property="og:site_name" content="Tony Xin">
 
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Tony Xin — Builder">
+	<meta name="twitter:description" content="Builder. Software, products, and small experiments.">
+
+	<link rel="preconnect" href="https://rsms.me/">
+	<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
+	<style>
+		:root {
+			--ink: #111;
+			--muted: #6b6b6b;
+			--line: #e6e6e6;
+			--bg: #fafaf9;
+			--accent: #111;
+		}
+		@media (prefers-color-scheme: dark) {
+			:root {
+				--ink: #f2f2f2;
+				--muted: #9a9a9a;
+				--line: #222;
+				--bg: #0e0e0e;
+				--accent: #f2f2f2;
+			}
+		}
+
+		* { box-sizing: border-box; }
+		html, body { margin: 0; padding: 0; }
+		html { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-feature-settings: 'ss01', 'cv11'; }
+		body {
+			background: var(--bg);
+			color: var(--ink);
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			line-height: 1.55;
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+		}
+
+		main {
+			max-width: 560px;
+			margin: 0 auto;
+			padding: 18vh 28px 6vh;
+			flex: 1;
+			width: 100%;
+		}
+
+		.name {
+			font-size: clamp(28px, 4vw, 34px);
+			font-weight: 600;
+			letter-spacing: -0.02em;
+			margin: 0 0 4px;
+		}
+		.role {
+			font-size: clamp(28px, 4vw, 34px);
+			font-weight: 600;
+			letter-spacing: -0.02em;
+			color: var(--muted);
+			margin: 0 0 32px;
+		}
+		.role::before {
+			content: "—";
+			margin-right: 10px;
+			color: var(--muted);
+		}
+
+		.bio {
+			font-size: 17px;
+			color: var(--ink);
+			margin: 0 0 18px;
+		}
+		.bio a {
+			color: var(--ink);
+			text-decoration: underline;
+			text-decoration-thickness: 1px;
+			text-underline-offset: 3px;
+			text-decoration-color: var(--line);
+			transition: text-decoration-color .2s ease;
+		}
+		.bio a:hover { text-decoration-color: var(--ink); }
+
+		.links {
+			list-style: none;
+			padding: 0;
+			margin: 36px 0 0;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px 22px;
+		}
+		.links a {
+			color: var(--muted);
+			text-decoration: none;
+			font-size: 15px;
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			transition: color .2s ease;
+		}
+		.links a:hover { color: var(--ink); }
+		.links a .arrow {
+			display: inline-block;
+			transition: transform .2s ease;
+		}
+		.links a:hover .arrow { transform: translate(2px, -2px); }
+
+		footer {
+			max-width: 560px;
+			margin: 0 auto;
+			padding: 0 28px 32px;
+			width: 100%;
+			color: var(--muted);
+			font-size: 13px;
+		}
+
+		.fade-in {
+			opacity: 0;
+			transform: translateY(6px);
+			animation: rise .7s ease forwards;
+		}
+		.fade-in.d1 { animation-delay: .05s; }
+		.fade-in.d2 { animation-delay: .15s; }
+		.fade-in.d3 { animation-delay: .25s; }
+		.fade-in.d4 { animation-delay: .40s; }
+
+		@keyframes rise {
+			to { opacity: 1; transform: none; }
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			.fade-in { animation: none; opacity: 1; transform: none; }
+		}
+	</style>
+
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "Person",
+		"name": "Tony Xin",
+		"url": "https://tonyxin.com",
+		"jobTitle": "Software Engineer",
+		"description": "Builder. Software engineer working on products at the intersection of consumer and infrastructure.",
+		"sameAs": [
+			"https://www.linkedin.com/in/tony-xin/",
+			"https://github.com/ttonyxx"
+		],
+		"worksFor": { "@type": "Organization", "name": "Kikoff" },
+		"alumniOf": { "@type": "CollegeOrUniversity", "name": "University of California, Berkeley" }
+	}
+	</script>
+</head>
+<body>
+
+	<main>
+		<h1 class="name fade-in d1">Tony Xin</h1>
+		<p class="role fade-in d2">builder</p>
+
+		<p class="bio fade-in d3">
+			I make software and ship products. Currently building at
+			<a href="https://kikoff.com" rel="noopener">Kikoff</a>.
+			Previously at <a href="https://roblox.com" rel="noopener">Roblox</a>,
+			where I shipped QR code scanning and profile link sharing to hundreds of millions of users.
+			Berkeley before that.
+		</p>
+		<p class="bio fade-in d3">
+			I like small, sharp things — tools that do one job well, interfaces that get out of the way,
+			and code that someone else can read a year later.
+		</p>
+
+		<ul class="links fade-in d4">
+			<li><a href="/animation.html">Animation <span class="arrow">↗</span></a></li>
+			<li><a href="https://github.com/ttonyxx" rel="noopener">GitHub <span class="arrow">↗</span></a></li>
+			<li><a href="https://www.linkedin.com/in/tony-xin/" rel="noopener">LinkedIn <span class="arrow">↗</span></a></li>
+			<li><a href="mailto:hi@tonyxin.com">Email <span class="arrow">↗</span></a></li>
+		</ul>
+	</main>
+
+	<footer class="fade-in d4">
+		<span>Bay Area</span>
+	</footer>
+
+</body>
 </html>
