@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Tony Xin">
+	<defs>
+		<linearGradient id="tx-bg" x1="0" y1="0" x2="1" y2="1">
+			<stop offset="0%" stop-color="#151515"/>
+			<stop offset="100%" stop-color="#050505"/>
+		</linearGradient>
+		<radialGradient id="tx-glow" cx="0.8" cy="0.2" r="0.7">
+			<stop offset="0%" stop-color="rgba(120, 119, 198, 0.45)"/>
+			<stop offset="100%" stop-color="rgba(120, 119, 198, 0)"/>
+		</radialGradient>
+		<style>
+			.fg { fill: #fafafa; }
+			.accent { fill: #fafafa; }
+		</style>
+	</defs>
+
+	<rect width="256" height="256" rx="56" fill="url(#tx-bg)"/>
+	<rect width="256" height="256" rx="56" fill="url(#tx-glow)"/>
+
+	<g transform="translate(48, 56)">
+		<path class="fg" d="M0 0 h160 v36 h-62 v128 h-36 v-128 h-62 z"/>
+		<circle class="accent" cx="156" cy="8" r="12"/>
+	</g>
+</svg>
