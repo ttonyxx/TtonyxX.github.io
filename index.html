@@ -5,20 +5,20 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 
-	<title>Tony Xin — Builder</title>
-	<meta name="description" content="Tony Xin is a builder — software engineer at Kikoff, co-founder of Schej (scheduling app for groups), and code camp instructor.">
+	<title>Tony Xin</title>
+	<meta name="description" content="Tony Xin — builder. Made Schej, ran Codet Camp, made Tomotime, runs mochisquares.com.">
 	<meta name="author" content="Tony Xin">
 	<meta name="robots" content="index, follow">
 	<link rel="canonical" href="https://tonyxin.com/">
 
 	<meta property="og:type" content="website">
 	<meta property="og:url" content="https://tonyxin.com/">
-	<meta property="og:title" content="Tony Xin — Builder">
+	<meta property="og:title" content="Tony Xin">
 	<meta property="og:description" content="Builder. Software, products, and small experiments.">
 	<meta property="og:site_name" content="Tony Xin">
 
 	<meta name="twitter:card" content="summary">
-	<meta name="twitter:title" content="Tony Xin — Builder">
+	<meta name="twitter:title" content="Tony Xin">
 	<meta name="twitter:description" content="Builder. Software, products, and small experiments.">
 
 	<link rel="preconnect" href="https://rsms.me/">
@@ -26,90 +26,134 @@
 
 	<style>
 		:root {
-			--ink: #111;
+			--ink: #0a0a0a;
 			--muted: #6b6b6b;
-			--line: #e6e6e6;
-			--bg: #fafaf9;
-			--accent: #111;
+			--faint: #b8b8b8;
+			--line: rgba(0, 0, 0, 0.08);
+			--bg: #fafaf8;
+			--ascii: rgba(10, 10, 10, 0.18);
+			--ascii-hot: rgba(10, 10, 10, 0.55);
+			--accent: #0a0a0a;
 		}
 		@media (prefers-color-scheme: dark) {
 			:root {
-				--ink: #f2f2f2;
+				--ink: #f5f5f5;
 				--muted: #9a9a9a;
-				--line: #222;
-				--bg: #0e0e0e;
-				--accent: #f2f2f2;
+				--faint: #555;
+				--line: rgba(255, 255, 255, 0.08);
+				--bg: #0a0a0a;
+				--ascii: rgba(245, 245, 245, 0.18);
+				--ascii-hot: rgba(245, 245, 245, 0.75);
+				--accent: #f5f5f5;
 			}
 		}
 
 		* { box-sizing: border-box; }
 		html, body { margin: 0; padding: 0; }
-		html { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-feature-settings: 'ss01', 'cv11'; }
+		html {
+			font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+			font-feature-settings: 'ss01', 'cv11', 'cv02';
+		}
 		body {
 			background: var(--bg);
 			color: var(--ink);
 			-webkit-font-smoothing: antialiased;
 			-moz-osx-font-smoothing: grayscale;
-			line-height: 1.55;
+			line-height: 1.65;
 			min-height: 100vh;
 			display: flex;
 			flex-direction: column;
+			position: relative;
+			overflow: hidden;
+			cursor: none;
 		}
 
+		#ascii {
+			position: fixed;
+			inset: 0;
+			margin: 0;
+			padding: 0;
+			font-family: 'SF Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+			font-size: 12px;
+			line-height: 1;
+			letter-spacing: 0;
+			color: var(--ascii);
+			white-space: pre;
+			pointer-events: none;
+			user-select: none;
+			z-index: 0;
+			opacity: 0;
+			animation: asciiIn 1.2s ease .1s forwards;
+		}
+		@keyframes asciiIn { to { opacity: 1; } }
+
 		main {
-			max-width: 560px;
+			max-width: 620px;
 			margin: 0 auto;
-			padding: 18vh 28px 6vh;
+			padding: 18vh 32px 6vh;
 			flex: 1;
 			width: 100%;
+			position: relative;
+			z-index: 2;
 		}
 
 		.name {
-			font-size: clamp(28px, 4vw, 34px);
+			font-size: clamp(34px, 5vw, 44px);
 			font-weight: 600;
-			letter-spacing: -0.02em;
-			margin: 0 0 4px;
+			letter-spacing: -0.04em;
+			margin: 0 0 2px;
+			line-height: 1.05;
 		}
 		.role {
-			font-size: clamp(28px, 4vw, 34px);
-			font-weight: 600;
-			letter-spacing: -0.02em;
+			font-size: clamp(16px, 2vw, 18px);
+			font-weight: 400;
+			letter-spacing: 0.01em;
 			color: var(--muted);
-			margin: 0 0 32px;
-		}
-		.role::before {
-			content: "—";
-			margin-right: 10px;
-			color: var(--muted);
+			margin: 0 0 36px;
 		}
 
 		.bio {
 			font-size: 17px;
 			color: var(--ink);
-			margin: 0 0 18px;
+			margin: 0 0 12px;
+			max-width: 52ch;
 		}
-		.bio a {
+
+		a.link {
 			color: var(--ink);
-			text-decoration: underline;
-			text-decoration-thickness: 1px;
-			text-underline-offset: 3px;
-			text-decoration-color: var(--line);
-			transition: text-decoration-color .2s ease;
+			text-decoration: none;
+			font-weight: 500;
+			position: relative;
+			padding: 0 1px;
+			transition: color .2s ease;
 		}
-		.bio a:hover { text-decoration-color: var(--ink); }
+		a.link::after {
+			content: "";
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: -2px;
+			height: 1px;
+			background: currentColor;
+			transform: scaleX(1);
+			transform-origin: left;
+			transition: transform .35s cubic-bezier(.65, 0, .35, 1);
+			opacity: 0.3;
+		}
+		a.link:hover::after { opacity: 1; }
 
 		.links {
 			list-style: none;
 			padding: 0;
-			margin: 36px 0 0;
+			margin: 40px 0 0;
 			display: flex;
 			flex-wrap: wrap;
-			gap: 8px 22px;
+			gap: 10px 24px;
 		}
 		.links a {
 			color: var(--muted);
 			text-decoration: none;
-			font-size: 15px;
+			font-size: 14px;
 			display: inline-flex;
 			align-items: center;
 			gap: 6px;
@@ -119,27 +163,91 @@
 		.links a .arrow {
 			display: inline-block;
 			transition: transform .2s ease;
+			font-size: 12px;
 		}
 		.links a:hover .arrow { transform: translate(2px, -2px); }
 
 		footer {
-			max-width: 560px;
+			max-width: 620px;
 			margin: 0 auto;
-			padding: 0 28px 32px;
+			padding: 0 32px 32px;
 			width: 100%;
 			color: var(--muted);
-			font-size: 13px;
+			font-size: 12px;
+			letter-spacing: 0.02em;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			position: relative;
+			z-index: 2;
+		}
+		footer .dot {
+			width: 6px;
+			height: 6px;
+			border-radius: 50%;
+			background: #4ade80;
+			box-shadow: 0 0 10px rgba(74, 222, 128, 0.7);
+			animation: pulse 2.4s ease-in-out infinite;
+		}
+		@keyframes pulse {
+			0%, 100% { opacity: 1; }
+			50% { opacity: 0.35; }
+		}
+
+		/* custom cursor */
+		#cursor {
+			position: fixed;
+			top: 0;
+			left: 0;
+			pointer-events: none;
+			z-index: 9999;
+			font-family: 'SF Mono', 'Menlo', monospace;
+			font-size: 14px;
+			font-weight: 600;
+			color: var(--ink);
+			transform: translate(-50%, -50%);
+			mix-blend-mode: difference;
+			will-change: transform;
+		}
+		#cursor .glyph {
+			display: inline-block;
+			transition: transform .25s cubic-bezier(.65, 0, .35, 1);
+			color: #fff;
+		}
+		#cursor.hover .glyph {
+			transform: scale(1.8) rotate(12deg);
+		}
+		#cursor .ring {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 28px;
+			height: 28px;
+			border: 1px solid rgba(255, 255, 255, 0.4);
+			border-radius: 50%;
+			transform: translate(-50%, -50%);
+			transition: width .25s ease, height .25s ease, border-color .25s ease;
+		}
+		#cursor.hover .ring {
+			width: 46px;
+			height: 46px;
+			border-color: rgba(255, 255, 255, 0.8);
+		}
+
+		@media (hover: none) {
+			body { cursor: auto; }
+			#cursor { display: none; }
 		}
 
 		.fade-in {
 			opacity: 0;
-			transform: translateY(6px);
-			animation: rise .7s ease forwards;
+			transform: translateY(8px);
+			animation: rise .9s cubic-bezier(.2, .8, .2, 1) forwards;
 		}
-		.fade-in.d1 { animation-delay: .05s; }
-		.fade-in.d2 { animation-delay: .15s; }
-		.fade-in.d3 { animation-delay: .25s; }
-		.fade-in.d4 { animation-delay: .40s; }
+		.fade-in.d1 { animation-delay: .15s; }
+		.fade-in.d2 { animation-delay: .30s; }
+		.fade-in.d3 { animation-delay: .50s; }
+		.fade-in.d4 { animation-delay: .75s; }
 
 		@keyframes rise {
 			to { opacity: 1; transform: none; }
@@ -147,6 +255,13 @@
 
 		@media (prefers-reduced-motion: reduce) {
 			.fade-in { animation: none; opacity: 1; transform: none; }
+			footer .dot { animation: none; }
+			#ascii { animation: none; opacity: 1; }
+		}
+
+		@media (max-width: 480px) {
+			main { padding: 14vh 24px 5vh; }
+			#ascii { font-size: 10px; }
 		}
 	</style>
 
@@ -157,46 +272,156 @@
 		"name": "Tony Xin",
 		"url": "https://tonyxin.com",
 		"jobTitle": "Software Engineer",
-		"description": "Builder. Software engineer at Kikoff, co-founder of Schej, and code camp instructor.",
+		"description": "Builder. Made Schej, ran Codet Camp, made Tomotime, runs mochisquares.com.",
 		"sameAs": [
 			"https://www.linkedin.com/in/tony-xin/",
 			"https://github.com/ttonyxx",
-			"https://schej.it"
-		],
-		"worksFor": { "@type": "Organization", "name": "Kikoff" }
+			"https://schej.it",
+			"https://tomotime.app",
+			"https://mochisquares.com"
+		]
 	}
 	</script>
 </head>
 <body>
 
+	<pre id="ascii" aria-hidden="true"></pre>
+
+	<div id="cursor" aria-hidden="true">
+		<span class="ring"></span>
+		<span class="glyph">✦</span>
+	</div>
+
 	<main>
 		<h1 class="name fade-in d1">Tony Xin</h1>
-		<p class="role fade-in d2">builder</p>
+		<p class="role fade-in d2">i like to build cool things</p>
 
 		<p class="bio fade-in d3">
-			Currently building at
-			<a href="https://kikoff.com" rel="noopener">Kikoff</a>.
-			I co-founded <a href="https://schej.it" rel="noopener">Schej</a>,
-			a group scheduling app that finds a time everyone can meet — overlaid on your calendar, free to use.
-			On the side, I teach kids to code at a summer code camp.
-		</p>
-		<p class="bio fade-in d3">
-			I like small, sharp things — tools that do one job well, interfaces that get out of the way,
-			and code that someone else can read a year later.
+			I made <a class="link" href="https://schej.it" rel="noopener">Schej</a>, a scheduling platform.
+			I ran Codet Camp.
+			I made <a class="link" href="https://tomotime.app" rel="noopener">Tomotime</a>,
+			and I run <a class="link" href="https://mochisquares.com" rel="noopener">mochisquares.com</a>.
 		</p>
 
 		<ul class="links fade-in d4">
-			<li><a href="https://schej.it" rel="noopener">Schej <span class="arrow">↗</span></a></li>
-			<li><a href="/animation.html">Animation <span class="arrow">↗</span></a></li>
 			<li><a href="https://github.com/ttonyxx" rel="noopener">GitHub <span class="arrow">↗</span></a></li>
 			<li><a href="https://www.linkedin.com/in/tony-xin/" rel="noopener">LinkedIn <span class="arrow">↗</span></a></li>
 			<li><a href="mailto:hi@tonyxin.com">Email <span class="arrow">↗</span></a></li>
+			<li><a href="/animation.html">Animation <span class="arrow">↗</span></a></li>
 		</ul>
 	</main>
 
 	<footer class="fade-in d4">
+		<span class="dot" aria-hidden="true"></span>
 		<span>Bay Area</span>
 	</footer>
+
+	<script>
+		// ---------- custom cursor ----------
+		(function () {
+			const cursor = document.getElementById('cursor');
+			const glyphEl = cursor.querySelector('.glyph');
+			const glyphs = ['✦', '✧', '◆', '◇', '✺', '❋', '✸'];
+			let gi = 0;
+			let tx = window.innerWidth / 2, ty = window.innerHeight / 2;
+			let cx = tx, cy = ty;
+
+			window.addEventListener('mousemove', (e) => {
+				tx = e.clientX;
+				ty = e.clientY;
+			});
+
+			document.querySelectorAll('a, [role="link"]').forEach(el => {
+				el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+				el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+			});
+
+			// rotate glyph every so often for fun
+			setInterval(() => {
+				gi = (gi + 1) % glyphs.length;
+				glyphEl.textContent = glyphs[gi];
+			}, 1200);
+
+			function raf() {
+				cx += (tx - cx) * 0.22;
+				cy += (ty - cy) * 0.22;
+				cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+				requestAnimationFrame(raf);
+			}
+			raf();
+		})();
+
+		// ---------- ascii background ----------
+		(function () {
+			const el = document.getElementById('ascii');
+			// ramp from faint to bold — tuned for ambient, not loud
+			const ramp = ' .·:-=+*#%@';
+			let cols = 0, rows = 0;
+			let mx = -9999, my = -9999; // mouse in cell space
+
+			function measure() {
+				// measure a single monospace cell
+				const probe = document.createElement('span');
+				probe.style.cssText = 'position:absolute;visibility:hidden;white-space:pre;font-family:inherit;font-size:inherit;line-height:1;';
+				probe.textContent = 'M'.repeat(50);
+				el.appendChild(probe);
+				const cw = probe.getBoundingClientRect().width / 50;
+				el.removeChild(probe);
+				const ch = parseFloat(getComputedStyle(el).fontSize); // line-height:1
+				cols = Math.ceil(window.innerWidth / cw) + 1;
+				rows = Math.ceil(window.innerHeight / ch) + 1;
+				return { cw, ch };
+			}
+
+			let cell = measure();
+
+			window.addEventListener('resize', () => {
+				cell = measure();
+			});
+
+			window.addEventListener('mousemove', (e) => {
+				mx = e.clientX / cell.cw;
+				my = e.clientY / cell.ch;
+			});
+
+			window.addEventListener('mouseleave', () => {
+				mx = -9999; my = -9999;
+			});
+
+			// simple value-noise style field using layered sines — smooth, organic, cheap
+			function field(x, y, t) {
+				const a = Math.sin(x * 0.12 + t * 0.6) * Math.cos(y * 0.14 - t * 0.5);
+				const b = Math.sin((x + y) * 0.08 + t * 0.9);
+				const c = Math.sin(Math.sqrt(x * x * 0.6 + y * y) * 0.18 - t * 1.1);
+				return (a + b * 0.7 + c * 0.8) / 2.5; // ~[-1, 1]
+			}
+
+			function render(t) {
+				const T = t * 0.0006;
+				let out = '';
+				for (let y = 0; y < rows; y++) {
+					let line = '';
+					for (let x = 0; x < cols; x++) {
+						let v = field(x, y, T);
+						// mouse adds a soft warm spot that pushes values up
+						const dx = x - mx;
+						const dy = y - my;
+						const d2 = dx * dx + dy * dy;
+						const warm = Math.exp(-d2 / 180); // radius of influence
+						v = v * 0.5 + 0.5; // -> [0,1]
+						v = Math.min(1, v + warm * 0.9);
+						let idx = Math.floor(v * (ramp.length - 1));
+						if (idx < 0) idx = 0;
+						line += ramp[idx];
+					}
+					out += line + '\n';
+				}
+				el.textContent = out;
+				requestAnimationFrame(render);
+			}
+			requestAnimationFrame(render);
+		})();
+	</script>
 
 </body>
 </html>
