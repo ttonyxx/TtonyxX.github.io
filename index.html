@@ -11,8 +11,8 @@
 	<meta name="robots" content="index, follow">
 	<link rel="canonical" href="https://tonyxin.com/">
 
-	<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-	<link rel="apple-touch-icon" href="/logo.svg">
+	<link rel="icon" href="favicon.svg" type="image/svg+xml">
+	<link rel="apple-touch-icon" href="logo.svg">
 	<meta name="theme-color" content="#0a0a0a">
 
 	<meta property="og:type" content="website">
@@ -121,6 +121,9 @@
 			color: var(--ink);
 			margin: 0 0 12px;
 			max-width: 52ch;
+		}
+		.bio .lede {
+			color: var(--muted);
 		}
 
 		a.link {
@@ -237,6 +240,13 @@
 			height: 46px;
 			border-color: rgba(255, 255, 255, 0.8);
 		}
+		#cursor.click .ring {
+			animation: clickRing .55s cubic-bezier(.2, .8, .2, 1);
+		}
+		@keyframes clickRing {
+			0%   { width: 28px; height: 28px; border-color: rgba(255, 255, 255, 0.9); }
+			100% { width: 110px; height: 110px; border-color: rgba(255, 255, 255, 0); }
+		}
 
 		@media (hover: none) {
 			body { cursor: auto; }
@@ -301,16 +311,17 @@
 		<p class="role fade-in d2">i like to build cool things</p>
 
 		<p class="bio fade-in d3">
-			I made <a class="link" href="https://schej.it" rel="noopener">Schej</a>, a scheduling platform.
-			I ran Codet Camp.
-			I made <a class="link" href="https://tomotime.app" rel="noopener">Tomotime</a>,
-			and I run <a class="link" href="https://mochisquares.com" rel="noopener">mochisquares.com</a>.
+			<span class="lede">some of the things i've worked on —</span>
+			<a class="link" href="https://schej.it" rel="noopener">schej</a>, a scheduling platform;
+			codet camp, a summer code camp for kids;
+			<a class="link" href="https://tomotime.app" rel="noopener">tomotime</a>;
+			and <a class="link" href="https://mochisquares.com" rel="noopener">mochisquares.com</a>.
 		</p>
 
 		<ul class="links fade-in d4">
 			<li><a href="https://github.com/ttonyxx" rel="noopener">GitHub <span class="arrow">↗</span></a></li>
 			<li><a href="https://www.linkedin.com/in/tony-xin/" rel="noopener">LinkedIn <span class="arrow">↗</span></a></li>
-			<li><a href="mailto:hi@tonyxin.com">Email <span class="arrow">↗</span></a></li>
+			<li><a href="mailto:tonyxin@berkeley.edu">Email <span class="arrow">↗</span></a></li>
 			<li><a href="/animation.html">Animation <span class="arrow">↗</span></a></li>
 		</ul>
 	</main>
@@ -338,6 +349,13 @@
 			document.querySelectorAll('a, [role="link"]').forEach(el => {
 				el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
 				el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+			});
+
+			// click feedback — restart ring animation each click
+			document.addEventListener('pointerdown', () => {
+				cursor.classList.remove('click');
+				void cursor.offsetWidth;
+				cursor.classList.add('click');
 			});
 
 			// rotate glyph every so often for fun
@@ -392,6 +410,19 @@
 				mx = -9999; my = -9999;
 			});
 
+			// click ripples — shockwave rings that pulse the ascii field
+			const ripples = [];
+			document.addEventListener('pointerdown', (e) => {
+				// don't ripple when clicking a link / button / input
+				if (e.target.closest('a, button, input, textarea, [role="link"]')) return;
+				ripples.push({
+					x: e.clientX / cell.cw,
+					y: e.clientY / cell.ch,
+					t0: performance.now(),
+				});
+				if (ripples.length > 10) ripples.shift();
+			});
+
 			// simple value-noise style field using layered sines — smooth, organic, cheap
 			function field(x, y, t) {
 				const a = Math.sin(x * 0.12 + t * 0.6) * Math.cos(y * 0.14 - t * 0.5);
@@ -402,6 +433,23 @@
 
 			function render(t) {
 				const T = t * 0.0006;
+				const now = performance.now();
+
+				// prune expired ripples (life ~1.8s)
+				for (let i = ripples.length - 1; i >= 0; i--) {
+					if (now - ripples[i].t0 > 1800) ripples.splice(i, 1);
+				}
+
+				// precompute ripple params each frame
+				const rips = ripples.map(r => {
+					const age = (now - r.t0) / 1000;      // seconds
+					const radius = age * 46;              // expanding ring radius (cells/sec)
+					const ringW = 2.2 + age * 1.6;        // ring thickness grows slightly
+					const ringFade = Math.max(0, 1 - age / 1.6);
+					const pulseFade = Math.max(0, 1 - age / 0.3);
+					return { x: r.x, y: r.y, age, radius, ringW, ringFade, pulseFade };
+				});
+
 				let out = '';
 				for (let y = 0; y < rows; y++) {
 					let line = '';
@@ -411,9 +459,28 @@
 						const dx = x - mx;
 						const dy = y - my;
 						const d2 = dx * dx + dy * dy;
-						const warm = Math.exp(-d2 / 180); // radius of influence
+						const warm = Math.exp(-d2 / 180);
 						v = v * 0.5 + 0.5; // -> [0,1]
 						v = Math.min(1, v + warm * 0.9);
+
+						// ripple contribution — expanding ring + brief center pulse
+						let rip = 0;
+						for (let i = 0; i < rips.length; i++) {
+							const r = rips[i];
+							const rdx = x - r.x, rdy = y - r.y;
+							const rd2 = rdx * rdx + rdy * rdy;
+							// quick reject far cells before sqrt
+							const reach = r.radius + r.ringW * 3;
+							if (rd2 > reach * reach && rd2 > 30) continue;
+							const dist = Math.sqrt(rd2);
+							const band = dist - r.radius;
+							const ring = Math.exp(-(band * band) / (r.ringW * r.ringW)) * r.ringFade;
+							const pulse = Math.exp(-rd2 / 10) * r.pulseFade * 0.85;
+							const c = ring > pulse ? ring : pulse;
+							if (c > rip) rip = c;
+						}
+						v = Math.min(1, v + rip);
+
 						let idx = Math.floor(v * (ramp.length - 1));
 						if (idx < 0) idx = 0;
 						line += ramp[idx];
